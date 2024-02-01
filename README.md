@@ -1,13 +1,29 @@
-# Sample Hardhat Project
+# Test Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This project the use of api in calling swap aggregator from a text contract. 
+This calls execte function with calldata via an api
 
-Try running some of the following tasks:
+# To run
+
+1. Open Terminal in root directory
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
+npm install
+run npm run dev
+```
+
+This will set up nodemon which will run the api and hardhat node cocurrently.
+
+2. Next in another terminal in the root directory type
+
+```shell
+npx hardhat run scripts/deploy.js --network localhost
+```
+This will deploy testUSDT and testDAI in the hardhat local node
+Then you can call the test swap api in api/app.js
+
+3. You can run the example script via 
+
+```shell
+node api/exampleHitAPI.js
 ```
