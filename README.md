@@ -9,7 +9,7 @@ This calls execte function with calldata via an api
 
 ```shell
 npm install
-run npm run dev
+npm run dev
 ```
 
 This will set up nodemon which will run the api and hardhat node cocurrently.
