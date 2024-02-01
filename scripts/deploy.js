@@ -1,19 +1,23 @@
 const hre = require("hardhat");
+const fs = require('fs');
 
-async function main() {
+let testDAI, testUSDT, simpleAMM;
+
+async function deployContract() {
   const [deployer] = await ethers.getSigners();
+
   console.log("Deploying contracts with the account:", deployer.address);
 
   const TestDAI = await ethers.getContractFactory("TestDAI");
-  const testDAI = await TestDAI.deploy();
+  testDAI = await TestDAI.deploy();
   console.log("TestDAI address:", testDAI.target);
 
   const TestUSDT = await ethers.getContractFactory("TestUSDT");
-  const testUSDT = await TestUSDT.deploy();
+  testUSDT = await TestUSDT.deploy();
   console.log("TestUSDT address:", testUSDT.target);
 
   const SimpleAMM = await ethers.getContractFactory("SimpleAMM");
-  const simpleAMM = await SimpleAMM.deploy(testDAI.target, testUSDT.target);
+  simpleAMM = await SimpleAMM.deploy(testDAI.target, testUSDT.target);
   console.log("SimpleAMM address:", simpleAMM.target);
 
   const liquidityAmountDAI = ethers.parseUnits("1000", 18); // for example
@@ -22,10 +26,30 @@ async function main() {
   await testUSDT.approve(simpleAMM.target, liquidityAmountUSDT);
 
   await simpleAMM.addLiquidity(liquidityAmountDAI, liquidityAmountUSDT);
-  console.log("Liquidity added to SimpleAMM");
+  console.log("Liquidity added to SimpleAMM \nIts ready to trade ......");
 }
 
-main()
+async function saveingAddresses() {
+  saveContractAddresses({
+    testDAI: testDAI.target,
+    testUSDT: testUSDT.target,
+    simpleAMM: simpleAMM.target
+  });
+}
+
+
+function saveContractAddresses(addresses) {
+  const filePath = 'deployedAddresses.json';
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+  fs.writeFileSync(filePath, JSON.stringify(addresses, null, 2));
+  console.log('Contract addresses saved to deployedAddresses.json');
+}
+
+
+deployContract()
+  .then(() => saveingAddresses())
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
