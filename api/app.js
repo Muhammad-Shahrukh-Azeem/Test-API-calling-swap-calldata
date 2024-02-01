@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 app.post('/swap', async (req, res) => {
   try {
       const { tokenIn, amountIn } = req.body;
-      await performSwap(tokenIn, ethers.parseUnits(amountIn, 18));
+      await performSwap(tokenIn, amountIn);
       res.send("Swap executed successfully");
   } catch (error) {
       console.error(error);
