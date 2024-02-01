@@ -17,6 +17,7 @@ This will set up nodemon which will run the api and hardhat node cocurrently.
 2. Next in another terminal in the root directory type
 
 ```shell
+npx hardhat test
 npx hardhat run scripts/deploy.js --network localhost
 ```
 This will deploy testUSDT and testDAI in the hardhat local node
